@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:wheelznstuff/core/services/dialog_manager.dart';
 import 'package:wheelznstuff/core/view_models/homeVM.dart';
 
 import 'core/services/api.dart';
@@ -18,6 +19,7 @@ void setupLocator() {
   //  See: https://www.filledstacks.com/snippet/dependency-injection-in-flutter/
   locator.registerLazySingleton(() => HomeVM());
   locator.registerLazySingleton<ApiService>( () => Api());
+  locator.registerLazySingleton(() => DialogManager());
   //locator.registerLazySingleton<MyAuthenticationService>( () => AuthenticationService());
   //locator.registerLazySingleton(() => AuthenticationService());
   //  We'll use a {Factory] for home model.  This means that every time
