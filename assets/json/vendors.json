@@ -1,0 +1,52 @@
+{
+  "vendors": [
+    {
+      "uid": "1",
+      "companyName": "Teamhoc",
+      "logo": "teamhoc-logo.png",
+      "emailAddress": "info@teamhoc.com",
+      "web": "https://www.teamhoc.com/"
+    },
+    {
+      "uid": "2",
+      "companyName": "Küschall",
+      "logo": "kuschall-logo.png",
+      "emailAddress": "",
+      "web": "https://kuschall.com"
+    },
+    {
+      "uid": "3",
+      "companyName": "Rehateam S.r.l",
+      "logo": "progeo-logo.png",
+      "emailAddress": "",
+      "web": "https://rehateamprogeo.com/index.php/en/"
+    },
+    {
+      "uid": "4",
+      "companyName": "Sunrise Medical",
+      "logo": "sunrise-medical-logo.png",
+      "emailAddress": "tenquiries@sunmed.co.uk",
+      "web": "https://www.sunrisemedical.co.uk/"
+    },
+    {
+      "uid": "5",
+      "companyName": "Wolturnus A/S",
+      "logo": "wolturnus-logo.png",
+      "emailAddress": "info@wolturnus.dk",
+      "web": "https://wolturnus.dk/en/"
+    },
+    {
+      "uid": "6",
+      "companyName": "Permobil",
+      "logo": "permobil-logo.png",
+      "emailAddress": "",
+      "web": "https://permobilus.com"
+    },
+    {
+      "uid": "7",
+      "companyName": "Motion Composites",
+      "logo": "motioncomposites-logo.png",
+      "emailAddress": "",
+      "web": "https://www.motioncomposites.com/"
+    }
+  ]}
