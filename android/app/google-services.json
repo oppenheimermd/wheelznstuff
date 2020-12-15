@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "100326196382",
+    "project_id": "wheelznstuff-9c124",
+    "storage_bucket": "wheelznstuff-9c124.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100326196382:android:5f8cd9c880cba28c2da78f",
+        "android_client_info": {
+          "package_name": "com.devsignerlabs.wheelznstuff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100326196382-ucg44po7gc33s6vu5q5g1954r5p27r87.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrQ4EOPPNqFS8a9OsvDfb1Zpe4TmeBx_s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100326196382-ucg44po7gc33s6vu5q5g1954r5p27r87.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
