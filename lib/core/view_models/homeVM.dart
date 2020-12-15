@@ -1,14 +1,14 @@
 import 'package:wheelznstuff/core/enums/viewState.dart';
 import 'package:wheelznstuff/core/model/vendor.dart';
-import 'package:wheelznstuff/core/services/api_service.dart';
 import 'package:wheelznstuff/core/services/dialog_manager.dart';
+import 'package:wheelznstuff/core/services/fake_api_service.dart';
 import 'package:wheelznstuff/core/view_models/baseViewModel.dart';
 
 import '../../locator.dart';
 
 class HomeVM extends BaseViewModel {
-  ApiService _api = locator<ApiService>();
   DialogManager _dialogManager = locator<DialogManager>();
+  FakeApiService _fakeApiService = locator<FakeApiService>();
 
   List<Vendor> vendors;
 
@@ -16,7 +16,7 @@ class HomeVM extends BaseViewModel {
   ///  [getVendors] function to get the posts for this user.
   Future getVendors() async {
     setState(ViewState.Busy);
-    vendors = await _api.getAllVendors();
+    vendors = await _fakeApiService.getAllVendors();
     setState(ViewState.Idle);
   }
 }
