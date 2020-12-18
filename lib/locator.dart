@@ -1,28 +1,30 @@
 import 'package:get_it/get_it.dart';
-import 'package:wheelznstuff/core/services/dialog_manager.dart';
+import 'package:wheelznstuff/core/services/FirestoreService.dart';
+import 'package:wheelznstuff/core/services/dialog_service.dart';
+import 'package:wheelznstuff/core/services/navigation_manager.dart';
+import 'package:wheelznstuff/core/services/navigation_service.dart';
 import 'package:wheelznstuff/core/view_models/homeVM.dart';
+import 'package:wheelznstuff/core/view_models/startupVM.dart';
 
 import 'core/services/auth_service.dart';
 import 'core/services/authenticationManager.dart';
 import 'core/services/fake_api_service.dart';
+import 'core/view_models/loginVM.dart';
 
-/*import 'package:provider_architecture/core/services/api.dart';
-import 'package:provider_architecture/core/services/authentication_service.dart';
-import 'package:provider_architecture/core/view_models/comments_model.dart';
-import 'package:provider_architecture/core/view_models/homemodel.dart';
-import 'package:provider_architecture/core/view_models/login_model.dart';
-
-import 'core/services/api_service.dart';*/
 
 GetIt locator = GetIt.instance;
 
 void setupLocator() {
   //  Register the LoginModel with the locator as a lazy singleton
   //  See: https://www.filledstacks.com/snippet/dependency-injection-in-flutter/
+  locator.registerLazySingleton(() => NavigationManager());
   locator.registerLazySingleton(() => HomeVM());
-  locator.registerLazySingleton(() => DialogManager());
+  locator.registerLazySingleton(() => LoginVM());
+  locator.registerLazySingleton(() => StartUpVM());
   locator.registerLazySingleton(() => FakeApiService());
-  locator.registerLazySingleton<AuthenticationService>( () => AuthenticationManager());
+  locator.registerLazySingleton(() => DialogService());
+  locator.registerLazySingleton(() => AuthenticationManager());
+  locator.registerLazySingleton(() => FirestoreService());
   //locator.registerLazySingleton(() => AuthenticationService());
   //  We'll use a {Factory] for home model.  This means that every time
   //  you request this type it creates a new one.

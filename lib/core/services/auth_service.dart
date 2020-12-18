@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
 
@@ -12,7 +13,7 @@ abstract class AuthenticationService {
 
   AppUser currentUser();
   Future<AppUser> signInAnonymously();
-  Future<AppUser> signInWithEmailAndPassword(String email, String password);
+  Future signInWithEmailAndPassword({String email, String password});
   Future<AppUser> createUserWithEmailAndPassword(String email, String password);
   Future<void> sendPasswordResetEmail(String email);
   Future<AppUser> signInWithEmailAndLink({String email, String link});
@@ -21,6 +22,8 @@ abstract class AuthenticationService {
   Future<AppUser> signInWithFacebook();
   Future<void> signOut(BuildContext context);
   Stream<AppUser> get onAuthStateChanged;
+  Future<bool> isUserLoggedIn();
+  Future _populateCurrentUser(User user);
   void dispose();
 }
 

@@ -10,14 +10,12 @@ class AppUser {
   final String email;
   final String photoUrl;
   final String displayName;
-  final DocumentReference reference;
 
   const AppUser({
     @required this.uid,
     @required this.email,
     @required this.photoUrl,
-    @required this.displayName,
-    this.reference
+    @required this.displayName
   });
 
   static AppUser initial(){
@@ -39,7 +37,7 @@ class AppUser {
 
  */
 
-  AppUser.fromMap(Map<String, dynamic> map(), {this.reference})
+  AppUser.fromMap(Map<String, dynamic> map(), )
       : assert(map()['uid'] != null),
         assert(map()['email'] != null),
         assert(map()['photoUrl'] != null),
@@ -50,7 +48,7 @@ class AppUser {
         displayName = map()['displayName'];
 
   AppUser.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data, reference: snapshot.reference);
+      : this.fromMap(snapshot.data);
 
   @override
   String toString() => "AppUSer{uid: $uid, email: $email, photoUrl: $photoUrl, displayName: $displayName }";
