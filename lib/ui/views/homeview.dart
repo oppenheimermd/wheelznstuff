@@ -140,36 +140,6 @@ class HomeView extends StatelessWidget {
                 : Center(child: CircularProgressIndicator())));
   }
 
-  /*Widget getPostsUi(List<Post> posts) => ListView.builder(
-      itemCount: posts.length,
-      itemBuilder: (context, index) => PostListItem(
-        post: posts[index],
-        onTap: () {
-          Navigator.pushNamed(context, 'post', arguments: posts[index]);
-        },
-      ));*/
-
-  /*
-  Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Column(
-                                  children: <Widget>[
-                                    Container(
-                                      width: 80,
-                                      height: 80,
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(image: NetworkImage("https://images.unsplash.com/photo-1525879000488-bff3b1c387cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"),fit: BoxFit.cover)
-                                      ),
-                                    ),
-                                    SizedBox(height: 15,),
-                                    Text("Jean-Luis")
-                                  ],
-                                ),
-                              ),
-  * */
-
-
   Widget buildTopVendors(HomeVM homeVM){
 
     List<Padding> paddingElements = new List<Padding>();

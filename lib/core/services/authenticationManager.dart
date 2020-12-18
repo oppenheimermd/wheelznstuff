@@ -1,6 +1,5 @@
 
 import 'dart:async';
-import 'dart:js';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,21 +7,29 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:wheelznstuff/core/model/appUser.dart';
+import 'package:wheelznstuff/core/services/FirestoreService.dart';
 import 'package:wheelznstuff/core/services/auth_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+
+import '../../locator.dart';
 
 
 
 class AuthenticationManager implements AuthenticationService{
 
-  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  FirebaseAuth _firebaseAuth;
+  FirestoreService _firestoreService;
   StreamController<AppUser> userStreamController;
 
   AuthenticationManager(){
     _firebaseAuth = FirebaseAuth.instance;
+    _firestoreService = locator<FirestoreService>();
     userStreamController = StreamController<AppUser>();
   }
+
+  User _currentUser;
+  //  to avoid naming conflict currentUser => retrieveCurrentUser
+  User get retrieveCurrentUser => _currentUser;
 
   AppUser _userFromFirebase(User user) {
     if (user == null) {
@@ -54,8 +61,8 @@ class AuthenticationManager implements AuthenticationService{
     return _appUser;
   }
 
-  Future<AppUser> signInWithEmailAndPassword(String email, String password) async {
-    final UserCredential userCredential = await _firebaseAuth
+  Future signInWithEmailAndPassword({String email, String password}) async {
+    /*final UserCredential userCredential = await _firebaseAuth
         .signInWithCredential(EmailAuthProvider.credential(
       email: email,
       password: password,
@@ -69,7 +76,21 @@ class AuthenticationManager implements AuthenticationService{
       userStreamController.add(_appUser);
     }
 
-    return _appUser;
+    return _appUser*/
+    try {
+      var authResult = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      User user = _firebaseAuth.currentUser;
+      var _appUser = _userFromFirebase(user);
+      userStreamController.add(_appUser);
+
+      return authResult.user != null;
+    } catch (e) {
+      return e.message;
+    }
   }
 
   @override
@@ -113,6 +134,7 @@ class AuthenticationManager implements AuthenticationService{
     return _firebaseAuth.isSignInWithEmailLink(link);
   }
 
+  //  See: https://fireship.io/lessons/flutter-firebase-google-oauth-firestore/
   @override
   Future<AppUser> signInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -129,6 +151,9 @@ class AuthenticationManager implements AuthenticationService{
         ));
         //return _userFromFirebase(userCredential.user);
 
+
+        //  Note we are only signed in with google but still
+        //  need to create this user in the database
 
         var hasUser = userCredential != null;
         AppUser _appUser;
@@ -198,6 +223,20 @@ class AuthenticationManager implements AuthenticationService{
     appuser = AppUser.initial();
     userStreamController.add(appuser);
     return _firebaseAuth.signOut();
+  }
+
+  //  https://github.com/FilledStacks/flutter-tutorials/blob/master/039-firebase-custom-start-user-profile/lib/services/authentication_service.dart
+  Future<bool> isUserLoggedIn() async {
+    var user = _firebaseAuth.currentUser;
+    await _populateCurrentUser(user);
+    return user != null;
+  }
+
+  //  https://github.com/FilledStacks/flutter-tutorials/blob/master/039-firebase-custom-start-user-profile/lib/services/authentication_service.dart
+  Future _populateCurrentUser(User user) async {
+    if (user != null) {
+      _currentUser = await _firestoreService.getUser(user.uid);
+    }
   }
 
   @override

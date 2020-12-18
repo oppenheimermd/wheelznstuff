@@ -1,13 +1,11 @@
 import 'package:wheelznstuff/core/enums/viewState.dart';
 import 'package:wheelznstuff/core/model/vendor.dart';
-import 'package:wheelznstuff/core/services/dialog_manager.dart';
 import 'package:wheelznstuff/core/services/fake_api_service.dart';
 import 'package:wheelznstuff/core/view_models/baseViewModel.dart';
 
 import '../../locator.dart';
 
 class HomeVM extends BaseViewModel {
-  DialogManager _dialogManager = locator<DialogManager>();
   FakeApiService _fakeApiService = locator<FakeApiService>();
 
   List<Vendor> vendors;
