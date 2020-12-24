@@ -7,7 +7,7 @@ import 'package:wheelznstuff/managers/dialog_manager.dart';
 import 'package:wheelznstuff/ui/router.dart';
 import 'package:wheelznstuff/ui/views/startup_view.dart';
 
-import 'core/model/appUser.dart';
+import 'core/model/user.dart';
 import 'core/services/authenticationManager.dart';
 import 'core/services/dialog_service.dart';
 import 'core/services/navigation_manager.dart';

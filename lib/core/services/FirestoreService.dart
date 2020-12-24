@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:wheelznstuff/core/model/appUser.dart';
+import 'package:wheelznstuff/core/model/user.dart';
 
 class FirestoreService {
   final CollectionReference _usersCollectionReference =
@@ -16,7 +16,7 @@ class FirestoreService {
   Future getUser(String uid) async {
     try {
       var userData = await _usersCollectionReference.doc(uid).get();
-      return AppUser.fromMap(userData.data);
+      return AppUser.fromData(userData.data());
     } catch (e) {
       return e.message;
     }

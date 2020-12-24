@@ -20,9 +20,9 @@ class _LoginViewState extends State<LoginView> {
   GlobalKey<FormState> getFormKey () => formKey;
   FormType _formType = FormType.login;
 
-  String _email;
-  String _password;
-  String _displayName;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final firstNameController = TextEditingController();
   bool processingForm = false;
 
   //  ‘auto validate’ is used to validate the input as soon as we enter the data.
@@ -44,6 +44,7 @@ class _LoginViewState extends State<LoginView> {
     _formType = FormType.login;
     model.moveToLogin(formKey);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +107,22 @@ class _LoginViewState extends State<LoginView> {
 
     if (_formType == FormType.register) {
       return <Widget>[
+        //  Firstname entry
+        TextFormField(
+          key: Key('firstname'),
+          decoration: InputDecoration(labelText: 'First name', labelStyle: TextStyle(
+              fontFamily: 'Archivo',
+              fontWeight: FontWeight.bold,
+              color: Colors.grey
+          ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.green)
+              )),
+          validator: DisplayNameValidator.validate,
+          //onSaved: (String value) => _firstName = value,
+          controller: firstNameController,
+        ),
+        SizedBox(height:20.0),
         //  Email entry
         TextFormField(
           key: Key('email'),
@@ -120,7 +137,8 @@ class _LoginViewState extends State<LoginView> {
             ),
           ),
           validator: EmailFieldValidator.validate,
-          onSaved: (String value) => _email = value,
+          //onSaved: (String value) => _email = value,
+          controller: emailController,
         ),
         SizedBox(height:20.0),
         //  Password entry
@@ -136,25 +154,11 @@ class _LoginViewState extends State<LoginView> {
               )),
           obscureText: true,
           validator: PasswordFieldValidator.validate,
-          onSaved: (String value) => _password = value,
+          //onSaved: (String value) => _password = value,
+          controller: passwordController,
         ),
 
         SizedBox(height:20.0),
-        TextFormField(
-          key: Key('displayname'),
-          decoration: InputDecoration(labelText: 'Display name', labelStyle: TextStyle(
-              fontFamily: 'Archivo',
-              fontWeight: FontWeight.bold,
-              color: Colors.grey
-          ),
-              focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.green)
-              )),
-          validator: DisplayNameValidator.validate,
-          onSaved: (String value) => _displayName = value,
-        ),
-
-
 
         Container(
           alignment: Alignment(1.0, 0.0),
@@ -186,7 +190,8 @@ class _LoginViewState extends State<LoginView> {
             ),
           ),
           validator: EmailFieldValidator.validate /*longhand version - (value) => EmailFieldValidator.validate(value)*/,
-          onSaved: (String value) => _email = value,
+          //onSaved: (String value) => _email = value,
+          controller: emailController,
         ),
         SizedBox(height:20.0),
         //  Password entry
@@ -202,7 +207,8 @@ class _LoginViewState extends State<LoginView> {
               )),
           obscureText: true,
           validator: PasswordFieldValidator.validate,
-          onSaved: (String value) => _password = value,
+          //onSaved: (String value) => _password = value,
+          controller: passwordController,
         ),
         Container(
           alignment: Alignment(1.0, 0.0),
@@ -235,10 +241,11 @@ class _LoginViewState extends State<LoginView> {
             color: Colors.green,
             elevation: 4.0,
             child: GestureDetector(
-              onTap: () => model.validateAndSubmit(
-                email: _email,
-                formType: _formType,
-                formKey: formKey
+              onTap: () => model.validateAndSubmitLogin(
+                  email: emailController.text,
+                  password: passwordController.text,
+                  formType: _formType,
+                  formKey: formKey,
               ),
               child: Center(
                 child: Text("LOGIN",
@@ -320,9 +327,10 @@ class _LoginViewState extends State<LoginView> {
             color: Colors.green,
             elevation: 4.0,
             child: GestureDetector(
-              onTap: () => model.validateAndSubmit(
-                email: _email,
-                password: _password,
+              onTap: () => model.validateAndSubmitSignUp(
+                email: emailController.text,
+                password: passwordController.text,
+                firstname: firstNameController.text,
                 formKey: formKey,
                 formType: _formType,
               ),

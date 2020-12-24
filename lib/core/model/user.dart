@@ -9,13 +9,13 @@ class AppUser {
   final String uid;
   final String email;
   final String photoUrl;
-  final String displayName;
+  final String firstName;
 
   const AppUser({
     @required this.uid,
     @required this.email,
-    @required this.photoUrl,
-    @required this.displayName
+    this.photoUrl,
+    @required this.firstName,
   });
 
   static AppUser initial(){
@@ -23,11 +23,30 @@ class AppUser {
         uid: null,
         email: null,
         photoUrl: null,
-        displayName: null
+        firstName: null,
     );
 
     return initialUser;
   }
+
+  AppUser.fromData(Map<String, dynamic> data)
+      : uid = data['uid'],
+        email = data['email'],
+        photoUrl = data['photoUrl'],
+        firstName = data['firstName'];
+
+  @override
+  String toString() => "AppUSer{firstName: $firstName, uid: $uid, firstName: $firstName, email: $email }";
+
+  Map<String, dynamic> toJson() {
+    return {
+      "uid": uid,
+      "email": email,
+      "photoUrl": photoUrl,
+      "firstName": firstName
+    };
+  }
+
 
 /*  AppUser.fromMap(Map snapshot) :
         uid = snapshot['uid'] ?? '',
@@ -35,7 +54,7 @@ class AppUser {
         photoUrl = snapshot['photoUrl'] ?? '',
         displayName = snapshot['displayName'] ?? '';
 
- */
+
 
   AppUser.fromMap(Map<String, dynamic> map(), )
       : assert(map()['uid'] != null),
@@ -47,19 +66,6 @@ class AppUser {
         photoUrl = map()['photoUrl'],
         displayName = map()['displayName'];
 
-  AppUser.fromSnapshot(DocumentSnapshot snapshot)
-      : this.fromMap(snapshot.data);
-
-  @override
-  String toString() => "AppUSer{uid: $uid, email: $email, photoUrl: $photoUrl, displayName: $displayName }";
-
-  toJson() {
-    return {
-      "uid": uid,
-      "email": email,
-      "photoUrl": photoUrl,
-      "displayName":displayName
-    };
-  }
+*/
 
 }

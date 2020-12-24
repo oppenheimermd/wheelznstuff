@@ -1,10 +1,9 @@
 
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:wheelznstuff/core/model/appUser.dart';
+import 'package:wheelznstuff/core/model/user.dart';
 
 abstract class AppAuthService{
 

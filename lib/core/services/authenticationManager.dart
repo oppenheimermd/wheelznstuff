@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
-import 'package:wheelznstuff/core/model/appUser.dart';
+import 'package:wheelznstuff/core/model/user.dart';
 import 'package:wheelznstuff/core/services/FirestoreService.dart';
 import 'package:wheelznstuff/core/services/auth_service.dart';
 import 'package:flutter/services.dart';
@@ -27,25 +27,26 @@ class AuthenticationManager implements AuthenticationService{
     userStreamController = StreamController<AppUser>();
   }
 
-  User _currentUser;
+  AppUser _currentUser;
   //  to avoid naming conflict currentUser => retrieveCurrentUser
-  User get retrieveCurrentUser => _currentUser;
+  AppUser get retrieveCurrentUser => _currentUser;
 
-  AppUser _userFromFirebase(User user) {
+  Future<AppUser> _userFromFirebase(User user) async {
     if (user == null) {
       return null;
     }
-    return AppUser(
+    /*return AppUser(
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoUrl: user.photoURL,
-    );
+    );*/
+    return await _firestoreService.getUser(user.uid);
   }
 
-  Stream<AppUser> get onAuthStateChanged {
+  /*Stream<AppUser> get onAuthStateChanged {
     return _firebaseAuth.authStateChanges().map(_userFromFirebase);
-  }
+  }*/
 
   Future<AppUser> signInAnonymously() async {
     final UserCredential userCredential = await _firebaseAuth.signInAnonymously();
@@ -54,7 +55,7 @@ class AuthenticationManager implements AuthenticationService{
     AppUser _appUser;
 
     if(hasUser){
-      _appUser = _userFromFirebase(userCredential.user);
+      _appUser = await _userFromFirebase(userCredential.user);
       userStreamController.add(_appUser);
     }
 
@@ -67,15 +68,12 @@ class AuthenticationManager implements AuthenticationService{
       email: email,
       password: password,
     ));
-
     var hasUser = userCredential != null;
     AppUser _appUser;
-
     if(hasUser){
       _appUser = _userFromFirebase(userCredential.user);
       userStreamController.add(_appUser);
     }
-
     return _appUser*/
     try {
       var authResult = await _firebaseAuth.signInWithEmailAndPassword(
@@ -84,7 +82,7 @@ class AuthenticationManager implements AuthenticationService{
       );
 
       User user = _firebaseAuth.currentUser;
-      var _appUser = _userFromFirebase(user);
+      var _appUser = await _userFromFirebase(user);
       userStreamController.add(_appUser);
 
       return authResult.user != null;
@@ -94,20 +92,29 @@ class AuthenticationManager implements AuthenticationService{
   }
 
   @override
-  Future<AppUser> createUserWithEmailAndPassword(
-      String email, String password) async {
-    final UserCredential userCredential = await _firebaseAuth
-        .createUserWithEmailAndPassword(email: email, password: password);
-    var hasUser = userCredential != null;
-    AppUser _appUser;
+  Future createUserWithEmailAndPassword({ String email, String password, String firstname}) async {
+    try{
+      var authResult = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-    if(hasUser){
-      _appUser = _userFromFirebase(userCredential.user);
-      userStreamController.add(_appUser);
+      // create a new user profile on firestore
+      var newUser = AppUser(
+        uid: authResult.user.uid,
+        firstName: firstname,
+        email: email
+      );
+
+      await _firestoreService.createUser(newUser);
+      userStreamController.add(newUser);
+
+      return authResult.user != null;
+    }catch (e) {
+      return e.message;
     }
-
-    return _appUser;
   }
+
 
   @override
   Future<void> sendPasswordResetEmail(String email) async {
@@ -122,7 +129,7 @@ class AuthenticationManager implements AuthenticationService{
     AppUser _appUser;
 
     if(hasUser){
-      _appUser = _userFromFirebase(userCredential.user);
+      _appUser = await _userFromFirebase(userCredential.user);
       userStreamController.add(_appUser);
     }
 
@@ -159,7 +166,7 @@ class AuthenticationManager implements AuthenticationService{
         AppUser _appUser;
 
         if(hasUser){
-          _appUser = _userFromFirebase(userCredential.user);
+          _appUser = await _userFromFirebase(userCredential.user);
           userStreamController.add(_appUser);
         }
 
@@ -192,7 +199,7 @@ class AuthenticationManager implements AuthenticationService{
       AppUser _appUser;
 
       if(hasUser){
-        _appUser = _userFromFirebase(userCredential.user);
+        _appUser = await _userFromFirebase(userCredential.user);
         userStreamController.add(_appUser);
       }
 
@@ -204,9 +211,9 @@ class AuthenticationManager implements AuthenticationService{
   }
 
   @override
-  AppUser currentUser() {
+  Future<AppUser> currentUser() async{
     final User user = _firebaseAuth.currentUser;
-    return _userFromFirebase(user);
+    return await _userFromFirebase(user);
   }
 
   @override
@@ -235,7 +242,10 @@ class AuthenticationManager implements AuthenticationService{
   //  https://github.com/FilledStacks/flutter-tutorials/blob/master/039-firebase-custom-start-user-profile/lib/services/authentication_service.dart
   Future _populateCurrentUser(User user) async {
     if (user != null) {
-      _currentUser = await _firestoreService.getUser(user.uid);
+      //  thisUserContext == Appuser type
+      var thisUserContext = await _firestoreService.getUser(user.uid);
+      //  Firestore User type
+      _currentUser = thisUserContext;
     }
   }
 
