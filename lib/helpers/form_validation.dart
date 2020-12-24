@@ -34,3 +34,14 @@ class DisplayNameValidator{
     }
   }
 }
+
+class FirstNameValidator{
+  static int minDisplayLength = 3;
+  static String validate(String value){
+    if((value.length < minDisplayLength) ||(value.isEmpty)) {
+      return 'First name field must be more than $minDisplayLength characters';
+    }else{
+      return null;
+    }
+  }
+}
