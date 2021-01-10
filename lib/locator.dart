@@ -4,6 +4,7 @@ import 'package:wheelznstuff/core/services/dialog_service.dart';
 import 'package:wheelznstuff/core/services/navigation_manager.dart';
 import 'package:wheelznstuff/core/view_models/homeVM.dart';
 import 'package:wheelznstuff/core/view_models/startupVM.dart';
+import 'package:wheelznstuff/core/view_models/tabdashboardVM.dart';
 
 import 'core/services/authenticationManager.dart';
 import 'core/services/fake_api_service.dart';
@@ -23,6 +24,7 @@ void setupLocator() {
   locator.registerLazySingleton(() => DialogService());
   locator.registerLazySingleton(() => AuthenticationManager());
   locator.registerLazySingleton(() => FirestoreService());
+  locator.registerLazySingleton(() => TabDashboardVM());
   //locator.registerLazySingleton(() => AuthenticationService());
   //  We'll use a {Factory] for home model.  This means that every time
   //  you request this type it creates a new one.

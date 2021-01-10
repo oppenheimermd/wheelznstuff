@@ -1,16 +1,19 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 import 'package:wheelznstuff/core/services/navigation_service.dart';
 import 'package:wheelznstuff/locator.dart';
 import 'package:wheelznstuff/managers/dialog_manager.dart';
 import 'package:wheelznstuff/ui/router.dart';
+import 'package:wheelznstuff/ui/views/login_view.dart';
 import 'package:wheelznstuff/ui/views/startup_view.dart';
 
 import 'core/model/user.dart';
 import 'core/services/authenticationManager.dart';
 import 'core/services/dialog_service.dart';
 import 'core/services/navigation_manager.dart';
+
 
 void main() async{
   //  call setupLocator before we run the app
@@ -39,7 +42,7 @@ class MyApp extends StatelessWidget {
         navigatorKey: locator<NavigationManager>().navigationKey,
         debugShowCheckedModeBanner: false,
         title: 'WheelznStuff',
-        home: StartUpView(),
+        home: LoginView(),
         onGenerateRoute: generateRoute,
         ),
       );
