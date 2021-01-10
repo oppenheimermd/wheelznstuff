@@ -24,6 +24,15 @@ class LoginVM extends BaseViewModel{
     _navigationService = locator<NavigationManager>();
   }
 
+  Future handleStartUp() async{
+    var hasLoggedInUser = await _authenticationManager.isUserLoggedIn();
+
+    if(hasLoggedInUser){
+      _navigationService.navigateTo(HomeViewRoute);
+
+    }
+  }
+
   bool validateAndSave({GlobalKey<FormState> formKey}) {
     final FormState form = formKey.currentState;
     if (form.validate()) {

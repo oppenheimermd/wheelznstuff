@@ -36,8 +36,13 @@ class _BaseViewState<T extends ChangeNotifier> extends State<BaseView<T>> {
   /// the consumption of our ChangeNotifierProvider object.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<T>(
-        create: (context) => model,
+    //  The following causes as "The default constructor of
+    //  ListenableProvider/ChangeNotifierProvider must create
+    //  a new, unused Listenable." error
+   // return ChangeNotifierProvider<T>(
+   //     create: (context) => model,
+    return ChangeNotifierProvider<T>.value(
+      value: model,
         child: Consumer<T>(builder: widget.builder));
   }
 }

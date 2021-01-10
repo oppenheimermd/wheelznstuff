@@ -1,20 +1,52 @@
+import 'package:flutter/material.dart';
+import 'package:wheelznstuff/constants/route_names.dart';
 import 'package:wheelznstuff/core/enums/viewState.dart';
-import 'package:wheelznstuff/core/model/vendor.dart';
-import 'package:wheelznstuff/core/services/fake_api_service.dart';
+import 'package:wheelznstuff/core/services/authenticationManager.dart';
+import 'package:wheelznstuff/core/services/navigation_manager.dart';
 import 'package:wheelznstuff/core/view_models/baseViewModel.dart';
+
 
 import '../../locator.dart';
 
 class HomeVM extends BaseViewModel {
-  FakeApiService _fakeApiService = locator<FakeApiService>();
+  TabController tabController;
 
-  List<Vendor> vendors;
+  AuthenticationManager _authenticationManager;
+  NavigationManager _navigationService;
 
-  ///  When the home view is initialized we want to call the
-  ///  [getVendors] function to get the posts for this user.
-  Future getVendors() async {
-    setState(ViewState.Busy);
-    vendors = await _fakeApiService.getAllVendors();
-    setState(ViewState.Idle);
+
+  HomeVM() {
+    _authenticationManager = locator<AuthenticationManager>();
+    _navigationService = locator<NavigationManager>();
   }
+
+
+  TabController initTabView({@required TabController tabController, @required int length,
+    @required TickerProvider tickerProvider}){
+    setState(ViewState.Busy);
+    tabController = new TabController(length: length, vsync: tickerProvider);
+    this.tabController = tabController;
+    setState(ViewState.Idle);
+    return tabController;
+  }
+
+  Future<void> signOut(BuildContext buildContext) async {
+
+    setState(ViewState.Busy);
+    await _authenticationManager.signOut(buildContext);
+    setState(ViewState.Idle);
+    _navigationService.navigateExit(LoginViewRoute);
+  }
+
+
+
+
+
+  //  leads to error: Once tou have called dispose(), it can no longer
+//  be used
+  /*@override
+  void dispose() {
+    this.tabController.dispose();
+    super.dispose();
+  }*/
 }

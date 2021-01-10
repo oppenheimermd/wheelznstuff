@@ -49,7 +49,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return BaseView<LoginVM>(
-        onModelReady: (model) {},
+        onModelReady: (model) => model.handleStartUp(),
         builder: (context, model, child) =>
             Scaffold(
                 body: model.state == ViewState.Idle

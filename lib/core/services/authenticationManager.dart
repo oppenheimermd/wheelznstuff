@@ -218,19 +218,24 @@ class AuthenticationManager implements AuthenticationService{
 
   @override
   Future<void> signOut(BuildContext context) async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    await googleSignIn.signOut();
+    /*final GoogleSignIn googleSignIn = GoogleSignIn();
+    var isSignedInWithGoogle = await googleSignIn.isSignedIn();
+    if(isSignedInWithGoogle == true){
+      await googleSignIn.signOut();
+    }*/
+
     //final FacebookLogin facebookLogin = FacebookLogin();
     //await facebookLogin.logOut();
 
     //  see: C:\Users\moppenheimer\repo\flutter_tuts\filledStacks_tuts\provider_architecture2\lib\core\services
     //  Get user, using Provider
-    var appuser = Provider.of<AppUser>(context);
+    var appuser = Provider.of<AppUser>(context, listen: false);
     //  clear user data instance
     appuser = AppUser.initial();
     userStreamController.add(appuser);
     return _firebaseAuth.signOut();
   }
+
 
   //  https://github.com/FilledStacks/flutter-tutorials/blob/master/039-firebase-custom-start-user-profile/lib/services/authentication_service.dart
   Future<bool> isUserLoggedIn() async {
